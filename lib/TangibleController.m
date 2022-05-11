@@ -1,6 +1,5 @@
 classdef TangibleController
-    %TANGIBLECONTROLLER Class that enables to send signal when an object was
-    %detected
+    %TANGIBLECONTROLLER Class that enables to send signal when an object was detected
     
     properties
         ipaddress='127.0.0.1';
@@ -29,7 +28,9 @@ classdef TangibleController
             %objName has been detected
             
             if(obj.debugMode)
-                success=true;disp("Detected object with name "+objName)
+                success=true;
+                c = clock; hh = c(4); mm = c(5); ss = c(6);
+                fprintf("%02d:%02d:%0.2f Detected object - [%s]\n", hh, mm, ss, objName)
             else
                 success=sendmsg("ObjectDetected:"+objName,obj.ipaddress,obj.port);
             end

@@ -1,3 +1,5 @@
+addpath(genpath('lib')) % include interface class
+
 % prepare input - we use laptop camera
 camera = webcam;
 
