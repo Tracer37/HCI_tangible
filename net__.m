@@ -2,9 +2,8 @@
 camera = webcam;
 
 % load pretrained net
-% data = load("pretrainedNet.m");
-% net = data.net;
-net = googlenet; % temporary solution
+data = load("pretrainedNet.mat");
+net = data.net;
 
 % define input size - images need to be resized
 inputSize = net.Layers(1).InputSize(1:2);
