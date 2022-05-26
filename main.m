@@ -1,6 +1,14 @@
-function [] = main(threshold, verbose)
+% Load pretrained net
+data = load("pretrainedNet.mat");
+net = data.net;
+
+% Main entry
+runApp(net, 0.73, true)
+
+function [] = runApp(net, threshold, verbose)
 % main
 arguments
+    net;                                % network which will perform classification
     threshold {mustBeNumeric} = 0.7;    % minimal score to send msg (and showe title)  
     verbose {logical}= true             % plot extra information about detected classes
 end
@@ -11,10 +19,6 @@ end
 
     % Prepare input - we use laptop camera
     camera = webcam;
-    
-    % Load pretrained net
-    data = load("pretrainedNet.mat");
-    net = data.net;
     
     % Get names of existing classes
     classNames = net.Layers(177).Classes;
@@ -49,7 +53,8 @@ end
     
         % Get best match
         maxScore = max(score);
-        detectedClass = char(label);
+        
+        detectedClass = removeUnderscores(char(label));
     
         if maxScore > threshold
             title(ax1,{detectedClass, num2str(maxScore, "%.2f")});
@@ -82,6 +87,7 @@ end
             idx = idx(nofClasses:-1:1);
             scoreTop = score(idx);
             classNamesTop = string(classNames(idx));
+            classNamesTop = removeUnderscores(classNamesTop);
         
             % Plot the histogram
             barh(ax2,scoreTop)
@@ -97,4 +103,8 @@ end
     % Clear resources
     clear camera
     close all
+end
+
+function str = removeUnderscores(str_in)
+    str = regexprep(str_in, '_', ' ');
 end
